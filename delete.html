@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="styles.css">
+        <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+        <title>Delete Task</title>
+    </head>
+    <body>
+        <div id="center_block">
+            <form id="task_form">
+                <div class="segment">
+                  <h1>Delete A Task</h1>
+                </div>
+                <label>
+                  <input id="name" type="text" placeholder="Task Name" required/>
+                </label>
+
+                <button id="delete-task-button" class="red" type="button"> Delete The Task </button>
+                <div class="segment">
+                    <button onclick="window.location.href='create.html'" class="unit" type="button" title = "Create New Task"><span class="iconify" data-icon="ion:add-circle" data-inline="false"></span></button>
+                    <button onclick="window.location.href='edit.html'" class="unit" type="button" title = "Edit Task"><span class="iconify" data-icon="ion:create" data-inline="false"></span></button>
+                    <button onclick="window.location.href='./ViewPage/view.html'" class="unit" type="button" title = "View Schedule"><span class="iconify" data-icon="ion:list-circle-sharp" data-inline="false"></span></button>
+                  </div>
+              </form>
+        </div>
+        <script>
+          const deleteTask = (ev)=>{
+            let tasks = JSON.parse(localStorage.getItem("schedule")) || [];
+            tasks.forEach(obj => {
+              Object.entries(obj).forEach(([key, value]) => {
+                if(value == document.getElementById('name').value)
+                {
+                  tasks.splice(tasks.indexOf(obj),1);
+                }
+              });
+            });
+            document.getElementById('task_form').reset();
+            localStorage.setItem("schedule", JSON.stringify(tasks));
+          }
+          document.addEventListener('DOMContentLoaded', ()=>{
+            document.getElementById('delete-task-button').addEventListener('click', deleteTask);
+          });
+      </script>
+    </body>
+</html>

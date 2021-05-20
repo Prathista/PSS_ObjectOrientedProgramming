@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="styles.css">
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script type="module" src="./loadSchedule.js"></script>
+        <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+        <title>PSS Webpage</title>
+    </head>
+    <body>
+        <div id="center_block">
+            <form id="task-form">
+                <div class="segment">
+                  <h1>Personal Schedule Service</h1>
+                </div>
+                    <label>
+                        <h3>Select a Schedule File</h3>
+                        <input type="file" id="pss-file" name="pss-file" accept="application/JSON">
+                    </label>
+                    <button id="load-schedule-button" class="red" type="button">Load Schedule</button>
+                    <br>
+                    <br>
+                    <br>
+                    <fieldset>
+                        <button id="create-schedule-button" class="red" type="button">Create New Schedule File</button>
+                    </fieldset>
+              </form>
+        </div>
+    </body>
+</html>

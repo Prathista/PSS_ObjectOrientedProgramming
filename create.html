@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="styles.css">
+        <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+        <title>PSS Webpage</title>
+    </head>
+    <body>
+        <div id="center_block">
+            <form id="task-form">
+                <div class="segment">
+                  <h1>Create A Task</h1>
+                </div>
+                <label>
+                  <input id="name" type="text" placeholder="Task Name" required/>
+                </label>
+                <label>
+                    <h3>What kind of task?</h3>
+                    <table id="radio-buttons">
+                        <tbody>
+                          <tr>
+                            <td><input type="radio" name="task-occurrance" id="one-time" value="one-time"></td>
+                            <td>One-Time</td>
+                            <td><input type="radio" name="task-occurrance" id="recurring" value="recurring"></td>
+                            <td>Recurring</td>
+                          </tr>
+                        </tbody>
+                    </table>
+                </label>
+                <label>
+                    <select id="type-selector" name="type" required>
+                        <option disabled selected value>Please Select Task Type</option>
+                    </select>
+                </label>
+                <label>
+                    <h3>Start Date:</h3>
+                    <input id="startDate" type="date" required/>
+                </label>
+                <label>
+                    <h3>Start Time of Task:</h3>
+                    <input type="time" id="startTime" name="startTime" required>
+                </label>
+                <label>
+                    <h3>Duration (in minutes):</h3>
+                    <input type="number" id="duration" name="duration" required>
+                </label>
+                <div id="end-date-section">
+                    <label>
+                        <h3>End Date:</h3>
+                        <input id="endDate" type="date" />
+                    </label>
+                </div>
+                <div id="frequency-section">
+                    <label>
+                        <h3>Frequency:</h3>
+                        <select id="frequency-selector" name="type" required>
+                            <option disabled selected value>Please Select Task Frequency</option>
+                            <option id="Daily" value="1">Daily</option>
+                            <option id="Weekly" value="7">Weekly</option>
+                        </select>
+                    </label>
+                </div>
+
+                <button id="create-task-button" class="red" type="button">Create</button>
+                <div class="segment">
+                    <button onclick="window.location.href='edit.html'" class="unit" type="button" title = "Edit Task"><span class="iconify" data-icon="ion:create" data-inline="false"></span></button>
+                    <button onclick="window.location.href='./ViewPage/view.html'" class="unit" type="button" title = "View Schedule"><span class="iconify" data-icon="ion:list-circle-sharp" data-inline="false"></span></button>
+                    <button onclick="window.location.href='delete.html'" class="unit" type="button" title = "Delete Task"><span class="iconify" data-icon="ion:ban" data-inline="false"></span></button>
+                  </div>
+              </form>
+        </div>
+        <script type="module" src="app.js"></script>
+        <script>
+            let tasks = JSON.parse(localStorage.getItem("schedule")) || [];
+            const addTask = (ev)=>{
+            ev.preventDefault();  //to stop the form submitting
+            let date = (document.getElementById('startDate').value).toString();
+            let endDate = (document.getElementById('startDate').value).toString();
+            let date_month = date.substring(5,7);
+            let day = date.substring(8,10);
+            let year = date.substring(0,4);
+            let endDate_month = endDate.substring(5,7);
+            let endDay = endDate.substring(8,10);
+            let endYear = endDate.substring(0,4);
+            let full_date = `${year}${date_month}${day}`;
+            let full_endDate = `${endYear}${endDate_month}${endDay}`;
+            let timeString = (document.getElementById('startTime').value).toString();
+            let time = timeString.split(":");
+            let duration = (document.getElementById('duration').value)/60;
+            let StartTime_Hour = parseInt(time[0]);
+            let StartTime_Minutes = ((parseFloat(time[1]))/60)*100;
+            let startTime = `${StartTime_Hour}.${StartTime_Minutes}`;          
+            let task = {};
+            if (document.getElementById('recurring').checked)
+            {
+                let task = {
+                    Name : document.getElementById('name').value,
+                    Type : document.getElementById('type-selector').value,
+                    StartDate: full_date,
+                    StartTime: startTime,
+                    Duration: duration,
+                    EndDate: full_endDate,
+                    Frequency: document.getElementById('Frequency')
+                }
+                tasks.push(task);
+            }
+            else if(document.getElementById('one-time').checked)
+            {
+                let task = {
+                    Name : document.getElementById('name').value,
+                    Type : document.getElementById('type-selector').value,
+                    Date: full_date,
+                    StartTime: startTime,
+                    Duration: duration
+                }
+                tasks.push(task);
+            }
+            localStorage.setItem("schedule", JSON.stringify(tasks));
+            document.forms[0].reset();
+            }
+            document.addEventListener('DOMContentLoaded', ()=>{
+                document.getElementById('create-task-button').addEventListener('click', addTask);
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,110 @@
+<html lang="en">
+  
+    <head>
+        <meta charset="UTF-8">
+        <title>View Tasks</title>
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+        <link rel="stylesheet" href="viewstyles.css">
+    </head>
+  
+    <body>
+        <section>
+            <h1>Tasks Calendar</h1>
+            <table id='table'>
+                <tr>
+                    <th>Task Name</th>
+                    <th>Task Type</th>
+                    <th>Date</th>
+                    <th>Start Time</th>
+                    <th>Duration</th>
+                </tr>
+                <script>
+                    $(document).ready(function () {
+                        var data = JSON.parse(localStorage.getItem("schedule"));
+                        console.log(data);
+                                data.sort(function(a,b)
+                                {
+                                    if(a.Date == b.Date)
+                                    {
+                                        return a.StartTime - b.StartTime;
+                                    }
+                                    return a.Date-b.Date;
+                                });
+                                var task = '';
+                                $.each(data, function (key, value)
+                                {
+                                    let date = '';
+                                    if(value.Type == "Visit"||value.Type == "Shopping"||value.Type == "Appointment" ||value.Type == "Cancellation")
+                                    {
+                                        date = value.Date.toString();
+                                    }
+                                    else
+                                    {
+                                       date = value.StartDate.toString();
+                                    }
+                                    let date_month = date.substring(4,6);
+                                    let day = date.substring(6,8);
+                                    let year = date.substring(0,4);
+                                    let full_date = `${date_month} / ${day} / ${year}`;
+                                    let minutes = (value.Duration %1)*60;
+                                    let hours = Math.floor(value.Duration);
+                                    let duration;
+                                    hours === 0 ? duration = `${minutes} Minutes` : duration = `${hours} Hours and ${minutes} Minutes`;
+                                    let StartTime_Hour = 0;
+                                    let StartTime_Minutes = 0;
+                                    let startTime;
+                                    if(value.StartTime>0 && value.StartTime<12)
+                                    {
+                                        StartTime_Hour = Math.floor(value.StartTime);
+                                        StartTime_Minutes = (value.StartTime %1)*60;
+                                        startTime = `${StartTime_Hour}:${StartTime_Minutes} AM`;
+                                    }
+                                    else if(value.StartTime>11 && value.StartTime<24)
+                                    {
+                                        StartTime_Hour = Math.floor(value.StartTime)-12;
+                                        StartTime_Minutes = (value.StartTime %1)*60;
+                                        startTime = `${StartTime_Hour}:${StartTime_Minutes} PM`;
+                                    }
+                                    else
+                                    {
+                                        StartTime_Hour = Math.floor(value.StartTime)-12;
+                                        StartTime_Minutes = (value.StartTime %1)*60;
+                                        startTime = `${StartTime_Hour}:${StartTime_Minutes} AM`;
+                                    }
+                                    task += '<tr>';
+                                    task += '<td>' + 
+                                        value.Name+ '</td>';
+        
+                                    task += '<td>' + 
+                                        value.Type + '</td>';
+        
+                                    task += '<td>' + 
+                                        full_date+ '</td>';
+        
+                                    task += '<td>' + 
+                                        startTime + '</td>';
+                                    
+                                    task += '<td>' + 
+                                        duration + '</td>';
+        
+                                    task += '</tr>';
+                                });
+                                $('#table').append(task);
+                    });
+                </script>
+        </section>
+        <div class="segment">
+            <button onclick="window.location.href='../create.html'" class="unit" type="button" title = "Create New Task"><span class="iconify" data-icon="ion:add-circle" data-inline="false"></span></button>
+            <button onclick="window.location.href='../edit.html'" class="unit" type="button" title = "Edit Task"><span class="iconify" data-icon="ion:create" data-inline="false"></span></button>
+            <button onclick="window.location.href='../delete.html'" class="unit" type="button" title = "Delete Task"><span class="iconify" data-icon="ion:ban" data-inline="false"></span></button>
+            <button onclick="clickHandler()" class="unit" type="button" title = "Export to file">Export</button>
+        </div>
+        <script>
+            function clickHandler() {
+                localStorage.getItem("schedule");
+            }
+        </script>
+        
+    </body>
+</html>

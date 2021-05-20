@@ -1,0 +1,57 @@
+[
+  {
+    "Name" : "Go to Store for socks",
+    "Type" : "Shopping",
+    "Date" : 20200415,
+    "StartTime" : 10.25,
+    "Duration" : 0.75
+  },
+  {
+    "Name" : "Go to Store for laptop",
+    "Type" : "Shopping",
+    "Date" : 20200415,
+    "StartTime" : 11.25,
+    "Duration" : 0.75
+  },
+  {
+    "Name" : "Take a walk",
+    "Type" : "Exercise",
+    "StartDate" : 20200415,
+    "StartTime" : 10.25,
+    "Duration" : 0.75,
+    "EndDate" : 20200715,
+    "Frequency" : 7
+  },
+  {
+    "Name" : "CS3560-Tu",
+    "Type" : "Class",
+    "StartDate" : 20200414,
+    "StartTime" : 19,
+    "Duration" : 1.25,
+    "EndDate" : 20200505,
+    "Frequency" : 7
+  },
+  {
+    "Name" : "CS3560-Th",
+    "Type" : "Class",
+    "StartDate" : 20200416,
+    "StartTime" : 19,
+    "Duration" : 1.25,
+    "EndDate" : 20200507,
+    "Frequency" : 7
+  },
+  {
+    "Name" : "Skip For Visit",
+    "Type" : "Cancellation",
+    "Date" : 20200428,
+    "StartTime" : 19,
+    "Duration" : 1.25
+  },
+  {
+    "Name" : "Intern Interview",
+    "Type" : "Appointment",
+    "Date" : 20200428,
+    "StartTime" : 17,
+    "Duration" : 2.5
+  }
+]

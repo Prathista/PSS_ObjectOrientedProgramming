@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="styles.css">
+        <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+        <!-- <script src="Pss.js"></script> -->
+        <title>Edit Task</title>
+    </head>
+    <body>
+        <div id="center_block">
+            <form id="task_form">
+                <div class="segment">
+                  <h1>Edit A Task</h1>
+                </div>
+                <label>
+                  <input id="name" type="text" placeholder="Task Name" required/>
+                </label>
+                <label>
+                    <h3>Start Date:</h3>
+                    <input id="startDate" type="date"/>
+                </label>
+                <label>
+                    <h3>Start Time of Task:</h3>
+                    <input type="time" id="startTime" name="startTime">
+                </label>
+                <label>
+                    <h3>Duration (in minutes):</h3>
+                    <input type="number" id="duration" name="duration" required>
+                </label>
+                <label>
+                    <h3>End Date:</h3>
+                    <input id="endDate" type="date" />
+                </label>
+                <label>
+                    <h3>Frequency (1 for Daily, 7 for Weekly):</h3>
+                    <input id="frequency" type="number" placeholder="1 or 7 Only" min = "1" max = "7" step ="6"/>
+                </label>
+                <button id="edit-task-button" class="red" type="button"> Edit The Task </button>
+                <div class="segment">
+                    <button onclick="window.location.href='create.html'" class="unit" type="button" title = "Create New Task"><span class="iconify" data-icon="ion:add-circle" data-inline="false"></span></button>
+                    <button onclick="window.location.href='./ViewPage/view.html'" class="unit" type="button" title = "View Schedule"><span class="iconify" data-icon="ion:list-circle-sharp" data-inline="false"></span></button>
+                    <button onclick="window.location.href='delete.html'" class="unit" type="button" title = "Delete Task"><span class="iconify" data-icon="ion:ban" data-inline="false"></span></button>
+                  </div>
+              </form>
+        </div>
+        <script>
+            let tasks = JSON.parse(localStorage.getItem("schedule")) || [];
+            const editTask = (ev)=>{
+                ev.preventDefault();  //to stop the form submitting
+                if(!document.getElementById("name").value)
+                {
+                    alert("Please Enter The Name of The Task You Wish To Delete.");
+                    document.getElementById('task_form').reset();
+                }
+                else
+                {
+                    if(document.getElementById("startDate").value)
+                    {
+                        let date = (document.getElementById('startDate').value).toString();
+                        let date_month = date.substring(5,7);
+                        let day = date.substring(8,10);
+                        let year = date.substring(0,4);
+                        let full_date = `${year}${date_month}${day}`;
+                        tasks.forEach(obj => {
+                            Object.entries(obj).forEach(([key, value]) => {
+                                if(value == document.getElementById('name').value)
+                                {
+                                    obj.StartDate = full_date;
+                                }
+                            });
+                        });
+                    }
+                    if((document.getElementById('startTime').value).toString())
+                    {
+                        let timeString = (document.getElementById('startTime').value).toString();
+                        let time = timeString.split(":");
+                        let duration = (document.getElementById('duration').value)/60;
+                        let StartTime_Hour = parseInt(time[0]);
+                        let StartTime_Minutes = ((parseFloat(time[1]))/60)*100;
+                        let startTime = `${StartTime_Hour}.${StartTime_Minutes}`;
+                        tasks.forEach(obj => {
+                            Object.entries(obj).forEach(([key, value]) => {
+                                if(value == document.getElementById('name').value)
+                                {
+                                    obj.StartTime = startTime;
+                                }
+                            });
+                        });
+                    }
+                    if(document.getElementById("duration").value)
+                    {
+                        let duration = document.getElementById("duration").value;
+                        tasks.forEach(obj => {
+                            Object.entries(obj).forEach(([key, value]) => {
+                                if(value == document.getElementById('name').value)
+                                {
+                                    obj.Duration = duration;
+                                }
+                            });
+                        });
+                    }
+                    if(document.getElementById("endDate").value)
+                    {
+                        let endDate = (document.getElementById('endDate').value).toString();
+                        let endDate_month = endDate.substring(5,7);
+                        let endDay = endDate.substring(8,10);
+                        let endYear = endDate.substring(0,4);
+                        let full_endDate = `${endYear}${endDate_month}${endDay}`;
+                        tasks.forEach(obj => {
+                            Object.entries(obj).forEach(([key, value]) => {
+                                if(value == document.getElementById('name').value)
+                                {
+                                    obj.EndDate = full_endDate;
+                                }
+                            });
+                        });
+                    }
+                    if(document.getElementById("frequency").value)
+                    {
+                        let frequency = document.getElementById('frequency').value;
+                        tasks.forEach(obj => {
+                            Object.entries(obj).forEach(([key, value]) => {
+                                if(value == document.getElementById('name').value)
+                                {
+                                    obj.Frequency = frequency;
+                                }
+                            });
+                        });
+                    }
+                }
+                localStorage.setItem("schedule", JSON.stringify(tasks));
+                document.getElementById('task_form').reset();
+            }
+            document.addEventListener('DOMContentLoaded', ()=>{
+                document.getElementById('edit-task-button').addEventListener('click', editTask);
+            });
+        </script>
+    </body>
+</html>
